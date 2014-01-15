@@ -7,43 +7,43 @@
         '$routeProvider',
         function (router) {
             router.when('/', {
-                templateUrl: '/assets/html/home.html',
+                templateUrl: 'assets/html/home.html',
                 controller: 'HomeCtrl',
                 controllerAs: 'home'
             });
 
             router.when('/profile', {
-                templateUrl: '/assets/html/profile.html',
+                templateUrl: 'assets/html/profile.html',
                 controller: 'HomeCtrl',
                 controllerAs: 'home'
             });
 
             router.when('/exercises', {
-                templateUrl: '/assets/html/exercises.html',
+                templateUrl: 'assets/html/exercises.html',
                 controller: 'ExercisesCtrl',
                 controllerAs: 'exercises'
             });
 
             router.when('/workouts', {
-                templateUrl: '/assets/html/workouts.html',
+                templateUrl: 'assets/html/workouts.html',
                 controller: 'WorkoutsCtrl',
                 controllerAs: 'workouts'
             });
 
             router.when('/nutrition', {
-                templateUrl: '/assets/html/nutrition.html',
+                templateUrl: 'assets/html/nutrition.html',
                 controller: 'NutritionCtrl',
                 controllerAs: 'nutrition'
             });
 
             router.when('/meals', {
-                templateUrl: '/assets/html/meals.html',
+                templateUrl: 'assets/html/meals.html',
                 controller: 'MealsCtrl',
                 controllerAs: 'meals'
             });
 
             router.when('/exercise/:slug', {
-                templateUrl: '/assets/html/exercise.html',
+                templateUrl: 'assets/html/exercise.html',
                 controller: 'ExerciseCtrl',
                 controllerAs: 'exercise',
                 resolve: {
@@ -56,7 +56,7 @@
             });
 
             router.when('/workout/:slug', {
-                templateUrl: '/assets/html/workout.html',
+                templateUrl: 'assets/html/workout.html',
                 controller: 'WorkoutCtrl',
                 controllerAs: 'workout',
                 resolve: {
