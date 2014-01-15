@@ -3,65 +3,76 @@
 (function () {
     var app = angular.module('GymTrackerApp', ['ngRoute']);
 
-    app.config(
-        [
-            '$routeProvider',
-            function (router) {
-                router.when('/', {
-                    templateUrl: '/assets/html/home.html',
-                    controller: 'HomeCtrl',
-                    controllerAs: 'home'
-                });
+    app.config([
+        '$routeProvider',
+        function (router) {
+            router.when('/', {
+                templateUrl: '/assets/html/home.html',
+                controller: 'HomeCtrl',
+                controllerAs: 'home'
+            });
 
-                router.when('/profile', {
-                    templateUrl: '/assets/html/profile.html',
-                    controller: 'HomeCtrl',
-                    controllerAs: 'home'
-                });
+            router.when('/profile', {
+                templateUrl: '/assets/html/profile.html',
+                controller: 'HomeCtrl',
+                controllerAs: 'home'
+            });
 
-                router.when('/exercises', {
-                    templateUrl: '/assets/html/exercises.html',
-                    controller: 'ExercisesCtrl',
-                    controllerAs: 'exercises'
-                });
+            router.when('/exercises', {
+                templateUrl: '/assets/html/exercises.html',
+                controller: 'ExercisesCtrl',
+                controllerAs: 'exercises'
+            });
 
-                router.when('/workouts', {
-                    templateUrl: '/assets/html/workouts.html',
-                    controller: 'WorkoutsCtrl',
-                    controllerAs: 'workouts'
-                });
+            router.when('/workouts', {
+                templateUrl: '/assets/html/workouts.html',
+                controller: 'WorkoutsCtrl',
+                controllerAs: 'workouts'
+            });
 
-                router.when('/nutrition', {
-                    templateUrl: '/assets/html/nutrition.html',
-                    controller: 'NutritionCtrl',
-                    controllerAs: 'nutrition'
-                });
+            router.when('/nutrition', {
+                templateUrl: '/assets/html/nutrition.html',
+                controller: 'NutritionCtrl',
+                controllerAs: 'nutrition'
+            });
 
-                router.when('/meals', {
-                    templateUrl: '/assets/html/meals.html',
-                    controller: 'MealsCtrl',
-                    controllerAs: 'meals'
-                });
+            router.when('/meals', {
+                templateUrl: '/assets/html/meals.html',
+                controller: 'MealsCtrl',
+                controllerAs: 'meals'
+            });
 
-                router.when('/exercise/:slug', {
-                    templateUrl: '/assets/html/exercise.html',
-                    controller: 'ExerciseCtrl',
-                    controllerAs: 'exercise',
-                    resolve: {
-                        'exercise': ['$route', 'exercises', function ($route, exercises) {
-                            var slug = $route.current.params.slug;
+            router.when('/exercise/:slug', {
+                templateUrl: '/assets/html/exercise.html',
+                controller: 'ExerciseCtrl',
+                controllerAs: 'exercise',
+                resolve: {
+                    exercise: ['$route', 'exercises', function ($route, exercises) {
+                        var slug = $route.current.params.slug;
 
-                            return exercises.findBySlug(slug);
-                        }]
-                    }
-                });
+                        return exercises.findBySlug(slug);
+                    }]
+                }
+            });
 
-                router.otherwise({
-                    redirectTo: '/'
-                });
-            }
-        ]
-    );
+            router.when('/workout/:slug', {
+                templateUrl: '/assets/html/workout.html',
+                controller: 'WorkoutCtrl',
+                controllerAs: 'workout',
+                resolve: {
+                    workout: ['$route', 'workouts', function ($route, workouts) {
+                        var slug = $route.current.params.slug;
+
+                        return workouts.findBySlug(slug);
+                    }]
+                }
+            });
+
+            router.otherwise({
+                redirectTo: '/'
+            });
+        }
+    ]);
 
     app.filter(
         'find',
@@ -101,24 +112,43 @@
         ]
     );
 
-    /*
-     */
+    app.service(
+        'storage',
+        [
+            function () {
+                this.load = function (key, otherwise) {
+                    return (localStorage.getItem(key) && JSON.parse(localStorage.getItem(key))) || otherwise;
+                };
+
+                this.save = function (key, value) {
+                    localStorage.setItem(key, JSON.stringify(value));
+                };
+            }
+        ]
+    );
 
     app.service(
         'exercises',
         [
-            function () {
+            'storage',
+            function (storage) {
                 this.items = [];
 
                 this.addExercise = function (title, video, tags, slug) {
                     slug = slug || title.toLowerCase().replace(' ', '-');
 
-                    this.items.push({
+                    var item = {
                         title: title,
                         slug: slug,
                         video: video,
                         tags: tags
-                    });
+                    };
+
+                    this.items.push(item);
+
+                    storage.save('exercises', this.items);
+
+                    return item;
                 };
 
                 this.findBySlug = function(value) {
@@ -147,6 +177,46 @@
                 this.addExercise('Good Mornings', 'http://www.youtube.com/watch?v=Iycq-kJann0', ['legs', 'lower', 'hamstrings']);
                 this.addExercise('Deadlift', 'http://www.youtube.com/watch?v=RyJbvWAh6ec', ['legs', 'lower', 'hamstrings']);
                 this.addExercise('Supermans', null, ['legs', 'lower', 'hamstrings']);
+
+                this.items = storage.load('exercises', this.items);
+
+                console.log(this.items);
+            }
+        ]
+    );
+
+    app.service(
+        'workouts',
+        [
+            'storage',
+            function (storage) {
+                var slug = 1;
+
+                this.items = [];
+
+                this.addWorkout = function () {
+                    var item = {
+                        slug: slug++
+                    };
+
+                    this.items.push(item);
+
+                    storage.save('workouts', this.items);
+
+                    return item;
+                };
+
+                this.findBySlug = function(value) {
+                    for (var i in this.items) {
+                        if (this.items[i].slug == value) {
+                            return this.items[i];
+                        }
+                    }
+
+                    return null;
+                };
+
+                this.items = storage.load('workouts', this.items);
             }
         ]
     );
@@ -185,7 +255,16 @@
     app.controller(
         'WorkoutsCtrl',
         [
-            function () {
+            '$location',
+            'workouts',
+            function (location, workouts) {
+                this.items = workouts.items;
+
+                this.startWorkout = function () {
+                    var workout = workouts.addWorkout();
+
+                    location.path('/workout/' + workout.slug);
+                };
             }
         ]
     );
@@ -214,6 +293,16 @@
                 this.title = exercise.title;
                 this.tags = exercise.tags;
                 this.video = exercise.video;
+            }
+        ]
+    );
+
+    app.controller(
+        'WorkoutCtrl',
+        [
+            'workout',
+            function (workout) {
+                this.slug = workout.slug;
             }
         ]
     );
