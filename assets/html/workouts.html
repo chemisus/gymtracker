@@ -4,4 +4,10 @@
     <button data-ng-click="workouts.startWorkout()">
         <i class="glyphicon glyphicon-plus"></i>
     </button>
+
+    <div>
+        <div data-ng-repeat="workout in workouts.items">
+            <a href="#/workout/{{ workout.slug }}">Workout</a>
+        </div>
+    </div>
 </div>
