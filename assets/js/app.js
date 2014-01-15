@@ -202,13 +202,11 @@
         [
             'storage',
             function (storage) {
-                var slug = 1;
-
                 this.items = [];
 
                 this.addWorkout = function () {
                     var item = {
-                        slug: slug++
+                        slug: new Date().getTime()
                     };
 
                     this.items.push(item);
