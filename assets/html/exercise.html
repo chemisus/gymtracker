@@ -1,0 +1,15 @@
+<div>
+    <h1>{{ exercise.title }}</h1>
+
+    <div>
+        <a href="{{ exercise.video }}">
+            <i class="glyphicon glyphicon-film"></i>
+        </a>
+    </div>
+
+    <ul class="list-inline">
+        <li data-ng-repeat="tag in exercise.tags">
+            <i class="glyphicon glyphicon-tag"></i> {{ tag }}
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,19 @@
+<div>
+    <h1>Exercises</h1>
+    <div class="input-group input-group-sm">
+        <input type="text" class="form-control" data-ng-model="exercises.search">
+        <span class="input-group-btn">
+            <button class="btn btn-default"
+                    type="button"
+                    data-ng-click="exercises.addExercise()">
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+        </span>
+    </div>
+    <ul>
+        <li data-ng-repeat="item in exercises.items"
+            data-ng-show="item | findExercise:exercises.search">
+            <a href="#/exercise/{{item.slug}}">{{ item.title }}</a>
+        </li>
+    </ul>
+</div>
