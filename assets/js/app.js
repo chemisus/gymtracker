@@ -116,12 +116,31 @@
         'storage',
         [
             function () {
+                function clean(value) {
+
+                    if (value instanceof Object || value instanceof Array) {
+                        delete value.$$hashKey;
+
+                        for (var i in value) {
+                            clean(value[i]);
+                        }
+                    }
+                }
+
                 this.load = function (key, otherwise) {
-                    return (localStorage.getItem(key) && JSON.parse(localStorage.getItem(key))) || otherwise;
+                    var value = (localStorage.getItem(key) && JSON.parse(localStorage.getItem(key))) || otherwise;
+
+                    clean(value);
+
+                    return value;
                 };
 
                 this.save = function (key, value) {
                     localStorage.setItem(key, JSON.stringify(value));
+                };
+
+                this.clear = function () {
+                    localStorage.clear();
                 };
             }
         ]
@@ -140,13 +159,13 @@
                     var item = {
                         title: title,
                         slug: slug,
-                        video: video,
-                        tags: tags
+                        video: video || null,
+                        tags: tags || []
                     };
 
                     this.items.push(item);
 
-                    storage.save('exercises', this.items);
+                    this.save();
 
                     return item;
                 };
@@ -161,26 +180,19 @@
                     return null;
                 };
 
-                this.addExercise('Back Squat', 'http://www.youtube.com/watch?v=2dpwZ0Vaih4', ['legs', 'lower', 'quads']);
-                this.addExercise('Front Squat', undefined, ['legs', 'lower', 'quads']);
-                this.addExercise('Leg Press', undefined, ['legs', 'lower', 'quads']);
-                this.addExercise('Split Squat', 'http://www.youtube.com/watch?v=r1jukGZPnZI', ['legs', 'lower', 'quads']);
-                this.addExercise('Lunges', 'http://www.youtube.com/watch?v=Z2n58m2i4jg', ['legs', 'lower', 'quads']);
-                this.addExercise('Step Ups', 'http://www.youtube.com/watch?v=dQqApCGd5Ss', ['legs', 'lower', 'quads']);
-                this.addExercise('Leg Extensions', undefined, ['legs', 'lower', 'quads']);
+                this.save = function () {
+                    console.log('saving');
 
-                this.addExercise('Romanian Deadlift', 'http://www.youtube.com/watch?v=WtWtjViRsKo', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Stiff Legged Deadlift', 'http://www.youtube.com/watch?v=gtevN0SWp-o', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Glute-Ham Raises', 'http://www.youtube.com/watch?v=tCsyyC5E7M8', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Pull Thrus', 'http://www.youtube.com/watch?v=A32WSOB-6Gw', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Leg Curls', null, ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Good Mornings', 'http://www.youtube.com/watch?v=Iycq-kJann0', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Deadlift', 'http://www.youtube.com/watch?v=RyJbvWAh6ec', ['legs', 'lower', 'hamstrings']);
-                this.addExercise('Supermans', null, ['legs', 'lower', 'hamstrings']);
+                    storage.save('exercises', this.items);
+                };
 
-                this.items = storage.load('exercises', this.items);
+                this.load = function () {
+                    console.log('loading');
 
-                console.log(this.items);
+                    this.items = storage.load('exercises', this.items);
+                };
+
+                this.load();
             }
         ]
     );
@@ -224,7 +236,34 @@
     app.controller(
         'HomeCtrl',
         [
-            function () {
+            'storage',
+            'exercises',
+            'workouts',
+            function (storage, exercises, workouts) {
+                this.resetStorage = function () {
+                    storage.clear();
+
+                    workouts.items = [];
+
+                    exercises.items = [];
+
+                    exercises.addExercise('Back Squat', 'http://www.youtube.com/watch?v=2dpwZ0Vaih4', ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Front Squat', undefined, ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Leg Press', undefined, ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Split Squat', 'http://www.youtube.com/watch?v=r1jukGZPnZI', ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Lunges', 'http://www.youtube.com/watch?v=Z2n58m2i4jg', ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Step Ups', 'http://www.youtube.com/watch?v=dQqApCGd5Ss', ['legs', 'lower', 'quads']);
+                    exercises.addExercise('Leg Extensions', undefined, ['legs', 'lower', 'quads']);
+
+                    exercises.addExercise('Romanian Deadlift', 'http://www.youtube.com/watch?v=WtWtjViRsKo', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Stiff Legged Deadlift', 'http://www.youtube.com/watch?v=gtevN0SWp-o', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Glute-Ham Raises', 'http://www.youtube.com/watch?v=tCsyyC5E7M8', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Pull Thrus', 'http://www.youtube.com/watch?v=A32WSOB-6Gw', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Leg Curls', null, ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Good Mornings', 'http://www.youtube.com/watch?v=Iycq-kJann0', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Deadlift', 'http://www.youtube.com/watch?v=RyJbvWAh6ec', ['legs', 'lower', 'hamstrings']);
+                    exercises.addExercise('Supermans', null, ['legs', 'lower', 'hamstrings']);
+                };
             }
         ]
     );
