@@ -75,7 +75,7 @@
     ]);
 
     app.filter(
-        'find',
+        'has',
         [
             function () {
                 return function (item, search, keys) {
@@ -101,12 +101,30 @@
     );
 
     app.filter(
-        'findExercise',
+        'hasExercise',
         [
-            'findFilter',
+            'hasFilter',
             function (find) {
                 return function (item, search) {
                     return find(item, search, ['title']);
+                }
+            }
+        ]
+    );
+
+    app.filter(
+        'findExerciseBySlug',
+        [
+            'exercises',
+            function (exercises) {
+                return function (slug) {
+                    for (var i in exercises.items) {
+                        if (exercises.items[i].slug == slug) {
+                            return exercises.items[i];
+                        }
+                    }
+
+                    return null;
                 }
             }
         ]
@@ -181,14 +199,10 @@
                 };
 
                 this.save = function () {
-                    console.log('saving');
-
                     storage.save('exercises', this.items);
                 };
 
                 this.load = function () {
-                    console.log('loading');
-
                     this.items = storage.load('exercises', this.items);
                 };
 
@@ -206,7 +220,9 @@
 
                 this.addWorkout = function () {
                     var item = {
-                        slug: new Date().getTime()
+                        slug: new Date().getTime(),
+                        exercises: [
+                        ]
                     };
 
                     this.items.push(item);
@@ -226,7 +242,15 @@
                     return null;
                 };
 
-                this.items = storage.load('workouts', this.items);
+                this.save = function () {
+                    storage.save('workouts', this.items);
+                };
+
+                this.load = function () {
+                    this.items = storage.load('workouts', this.items);
+                };
+
+                this.load();
             }
         ]
     );
@@ -337,9 +361,51 @@
     app.controller(
         'WorkoutCtrl',
         [
+            'workouts',
             'workout',
-            function (workout) {
+            'exercises',
+            function (workouts, workout, exercises) {
                 this.slug = workout.slug;
+                this.exercises = workout.exercises;
+                this.es = exercises;
+
+                this.addExercise = function (exercise) {
+                    workout.exercises.push({
+                        slug: exercise.slug,
+                        sets: []
+                    });
+
+                    workouts.save();
+                };
+
+                this.addSet = function (exercise) {
+                    exercise.sets.push({
+                        reps: 0,
+                        weight: 0
+                    });
+
+                    workouts.save();
+                };
+
+                this.removeSet = function (exercise, set) {
+                    var index = exercise.sets.indexOf(set);
+
+                    if (index != -1) {
+                        exercise.sets.splice(index, 1);
+                    }
+
+                    workouts.save();
+                };
+
+                this.removeExercise = function (exercise) {
+                    var index = workout.exercises.indexOf(exercise);
+
+                    if (index != -1) {
+                        workout.exercises.splice(index, 1);
+                    }
+
+                    workouts.save();
+                };
             }
         ]
     );

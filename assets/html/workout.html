@@ -1,5 +1,30 @@
 <div>
     <h1>Workout {{ workout.slug }}</h1>
 
+    <button type="button" data-ng-click="workout.addExercise()"><i class="glyphicon glyphicon-plus"></i> Exercise</button>
 
+    <ul>
+        <li data-ng-repeat="item in workout.es.items">
+            <button type="button" data-ng-click="workout.addExercise(item)"><i class="glyphicon glyphicon-plus"></i></button>
+            <a href="#/exercise/{{item.slug}}">{{ item.title }}</a>
+        </li>
+    </ul>
+
+    <hr />
+
+    <div data-ng-repeat="exercise in workout.exercises">
+        <button type="button" data-ng-click="workout.removeExercise(exercise)"><i class="glyphicon glyphicon-trash"></i></button>
+        {{ (exercise.slug | findExerciseBySlug).title }}
+        <a href="{{ (exercise.slug | findExerciseBySlug).video }}"><i class="glyphicon glyphicon-film"></i></a>
+
+        <button type="button" data-ng-click="workout.addSet(exercise)"><i class="glyphicon glyphicon-plus"></i> Set</button>
+
+        <div data-ng-repeat="set in exercise.sets">
+            <button type="button" data-ng-click="workout.removeSet(exercise, set)"><i class="glyphicon glyphicon-trash"></i></button>
+            reps
+            <input type="text" data-ng-model="set.reps" />
+            weight
+            <input type="text" data-ng-model="set.weight" />
+        </div>
+    </div>
 </div>
