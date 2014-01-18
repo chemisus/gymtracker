@@ -1,30 +1,63 @@
 <div>
     <h1>Workout {{ workout.slug }}</h1>
 
-    <button type="button" data-ng-click="workout.addExercise()"><i class="glyphicon glyphicon-plus"></i> Exercise</button>
+    <button type="button"
+            data-ng-hide="workout.adding"
+            data-ng-click="workout.showExercises()">Show Exercises
+    </button>
 
-    <ul>
+    <button type="button"
+            data-ng-show="workout.adding"
+            data-ng-click="workout.hideExercises()">Hide Exercises
+    </button>
+
+    <ul data-ng-show="workout.adding">
         <li data-ng-repeat="item in workout.es.items">
-            <button type="button" data-ng-click="workout.addExercise(item)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button"
+                    data-ng-click="workout.addExercise(item)"><i class="glyphicon glyphicon-plus"></i></button>
             <a href="#/exercise/{{item.slug}}">{{ item.title }}</a>
         </li>
     </ul>
 
-    <hr />
+    <hr/>
 
     <div data-ng-repeat="exercise in workout.exercises">
-        <button type="button" data-ng-click="workout.removeExercise(exercise)"><i class="glyphicon glyphicon-trash"></i></button>
+        <button type="button"
+                data-ng-click="workout.removeExercise(exercise)"><i class="glyphicon glyphicon-trash"></i></button>
         {{ (exercise.slug | findExerciseBySlug).title }}
         <a href="{{ (exercise.slug | findExerciseBySlug).video }}"><i class="glyphicon glyphicon-film"></i></a>
 
-        <button type="button" data-ng-click="workout.addSet(exercise)"><i class="glyphicon glyphicon-plus"></i> Set</button>
+        <button type="button"
+                data-ng-click="workout.addSet(exercise)"><i class="glyphicon glyphicon-plus"></i> Set
+        </button>
 
         <div data-ng-repeat="set in exercise.sets">
-            <button type="button" data-ng-click="workout.removeSet(exercise, set)"><i class="glyphicon glyphicon-trash"></i></button>
-            reps
-            <input type="text" data-ng-model="set.reps" />
+            <button type="button"
+                    data-ng-click="workout.removeSet(exercise, set)"><i class="glyphicon glyphicon-trash"></i></button>
+
+
+
             weight
-            <input type="text" data-ng-model="set.weight" />
+            <button type="button"
+                    data-ng-click="workout.addWeight(set, -5);"><i class="glyphicon-minus"></i></button>
+            <input type="text"
+                   style="width: 3em; text-align: right;"
+                   data-ng-model="set.weight"/>
+            <button type="button"
+                    data-ng-click="workout.addWeight(set, 5);"><i class="glyphicon-plus"></i></button>
+
+
+
+            reps
+            <button type="button"
+                    data-ng-click="workout.addRep(set, -1);"><i class="glyphicon-minus"></i></button>
+            <input type="text"
+                   style="width: 3em; text-align: right;"
+                   data-ng-model="set.reps"/>
+            <button type="button"
+                    data-ng-click="workout.addRep(set, 1);"><i class="glyphicon-plus"></i></button>
         </div>
+
+        <hr/>
     </div>
 </div>
