@@ -269,6 +269,8 @@
 
                     exercises.items = [];
 
+
+
                     exercises.addExercise('Back Squat', 'http://www.youtube.com/watch?v=2dpwZ0Vaih4', ['legs', 'lower', 'quads']);
                     exercises.addExercise('Front Squat', undefined, ['legs', 'lower', 'quads']);
                     exercises.addExercise('Leg Press', undefined, ['legs', 'lower', 'quads']);

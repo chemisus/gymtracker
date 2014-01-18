@@ -11,13 +11,29 @@
             data-ng-click="workout.hideExercises()">Hide Exercises
     </button>
 
-    <ul data-ng-show="workout.adding">
-        <li data-ng-repeat="item in workout.es.items">
-            <button type="button"
-                    data-ng-click="workout.addExercise(item)"><i class="glyphicon glyphicon-plus"></i></button>
-            <a href="#/exercise/{{item.slug}}">{{ item.title }}</a>
-        </li>
-    </ul>
+    <table data-ng-show="workout.adding">
+        <tr data-ng-repeat="item in workout.es.items">
+            <td>
+                <button type="button"
+                        data-ng-click="workout.addExercise(item)"><i class="glyphicon glyphicon-plus"></i></button>
+            </td>
+            <td>
+                <a href="#/exercise/{{item.slug}}">{{ item.title }}</a>
+            </td>
+            <td>
+                <ul class="list-inline">
+                    <li data-ng-repeat="tag in item.tags">
+                        <i class="glyphicon glyphicon-tag"></i> {{ tag }}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <button type="button"
+            data-ng-show="workout.adding"
+            data-ng-click="workout.hideExercises()">Hide Exercises
+    </button>
 
     <hr/>
 
