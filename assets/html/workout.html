@@ -38,6 +38,10 @@
         </div>
 
         <div class="col-sm-1">
+            <a href="{{ (exercise.slug | findExerciseBySlug).video }}"><i class="glyphicon glyphicon-film"></i></a>
+        </div>
+
+        <div class="col-sm-1">
             <button type="button" data-ng-click="workout.removeExercise(exercise)">
                 <i class="glyphicon glyphicon-trash"></i>
             </button>
