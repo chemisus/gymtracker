@@ -75,6 +75,32 @@
     ]);
 
     app.filter(
+        'workoutTags',
+        [
+            'findExerciseBySlugFilter',
+            function (findExerciseBySlug) {
+                return function (workout) {
+                    var tags = [];
+
+                    for (var i in workout.exercises) {
+                        var exercise = findExerciseBySlug(workout.exercises[i].slug);
+
+                        for (var j in exercise.tags) {
+                            var tag = exercise.tags[j];
+
+                            if (tags.indexOf(tag) == -1) {
+                                tags.push(tag);
+                            }
+                        }
+                    }
+
+                    return tags;
+                }
+            }
+        ]
+    );
+
+    app.filter(
         'has',
         [
             function () {
@@ -414,12 +440,17 @@
             'workouts',
             'workout',
             'exercises',
-            function (workouts, workout, exercises) {
+            'workoutTagsFilter',
+            function (workouts, workout, exercises, workoutTags) {
                 this.slug = workout.slug;
                 this.exercises = workout.exercises;
                 this.es = exercises;
 
                 this.adding = false;
+
+                this.tags = function () {
+                    return workoutTags(workout);
+                };
 
                 this.showExercises = function () {
                     this.adding = true;

@@ -5,9 +5,17 @@
         <i class="glyphicon glyphicon-plus"></i>
     </button>
 
-    <div>
-        <div data-ng-repeat="workout in workouts.items">
+</div>
+
+<div data-ng-repeat="workout in workouts.items">
+    <div class="row">
+        <div class="col-sm-3">
             <a href="#/workout/{{ workout.slug }}">Workout {{ workout.slug}}</a>
+        </div>
+        <div class="col-sm-9">
+            <ul class="list-inline">
+                <li data-ng-repeat="tag in workout | workoutTags"><i class="glyphicon glyphicon-tag"></i> {{ tag }}</li>
+            </ul>
         </div>
     </div>
 </div>

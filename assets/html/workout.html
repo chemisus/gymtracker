@@ -4,6 +4,14 @@
 
 <div class="row">
     <div class="col-sm-12">
+        <ul class="list-inline">
+            <li data-ng-repeat="tag in workout.tags()"><i class="glyphicon glyphicon-tag"></i> {{ tag }}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
         <button type="button" data-ng-hide="workout.adding" data-ng-click="workout.showExercises()">Show Exercises
         </button>
         <button type="button" data-ng-show="workout.adding" data-ng-click="workout.hideExercises()">Hide Exercises
