@@ -439,12 +439,12 @@
                 };
 
                 this.addWeight = function (set, value) {
-                    set.weight += value;
+                    set.weight = parseInt(set.weight) + value;
                     workouts.save();
                 };
 
                 this.addRep = function (set, value) {
-                    set.reps += value;
+                    set.reps = parseInt(set.reps) + value;
                     workouts.save();
                 };
 
@@ -452,7 +452,7 @@
                     var last = exercise.sets.length > 0 ? exercise.sets[exercise.sets.length - 1].weight : 0;
 
                     exercise.sets.push({
-                        reps: 0,
+                        reps: 6,
                         weight: last
                     });
 
