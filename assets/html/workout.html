@@ -36,40 +36,50 @@
             <button type="button" data-ng-click="workout.addSet(exercise)"><i class="glyphicon glyphicon-plus"></i> Set
             </button>
         </div>
-        <button type="button" data-ng-click="workout.removeExercise(exercise)"><i class="glyphicon glyphicon-trash"></i>
-        </button>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Weight</th>
-                    <th>Reps</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-ng-repeat="set in exercise.sets">
-                    <td>
-                        <button type="button" data-ng-click="workout.addWeight(set, -5);">
-                            <i class="glyphicon-minus"></i></button>
-                        <input type="text" style="width: 3em; text-align: right;" data-ng-model="set.weight"/>
 
-                        <button type="button" data-ng-click="workout.addWeight(set, 5);"><i class="glyphicon-plus"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" data-ng-click="workout.addRep(set, -1);"><i class="glyphicon-minus"></i>
-                        </button>
-                        <input type="text" style="width: 3em; text-align: right;" data-ng-model="set.reps"/>
-
-                        <button type="button" data-ng-click="workout.addRep(set, 1);"><i class="glyphicon-plus"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" data-ng-click="workout.removeSet(exercise, set)">
-                            <i class="glyphicon glyphicon-trash"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-1">
+            <button type="button" data-ng-click="workout.removeExercise(exercise)">
+                <i class="glyphicon glyphicon-trash"></i>
+            </button>
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Weight</th>
+                        <th>Reps</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="set in exercise.sets">
+                        <td>
+                            <button type="button" data-ng-click="workout.addWeight(set, -5);">
+                                <i class="glyphicon-minus"></i></button>
+                            <input type="text" style="width: 3em; text-align: right;" data-ng-model="set.weight"/>
+
+                            <button type="button" data-ng-click="workout.addWeight(set, 5);">
+                                <i class="glyphicon-plus"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" data-ng-click="workout.addRep(set, -1);">
+                                <i class="glyphicon-minus"></i>
+                            </button>
+                            <input type="text" style="width: 3em; text-align: right;" data-ng-model="set.reps"/>
+
+                            <button type="button" data-ng-click="workout.addRep(set, 1);"><i class="glyphicon-plus"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" data-ng-click="workout.removeSet(exercise, set)">
+                                <i class="glyphicon glyphicon-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
