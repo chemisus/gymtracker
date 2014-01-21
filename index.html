@@ -8,20 +8,39 @@
         <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"
               rel="stylesheet"
               type="text/css"/>
+        <script src="bower_components/jquery/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="assets/js/app.js"></script>
     </head>
     <body>
-        <nav>
-            <ul class="nav nav-pills nav-stacked">
-                <li><a href="#/exercises"><i class="glyphicon glyphicon-wrench"></i> Exercises</a></li>
-                <li><a href="#/nutrition"><i class="glyphicon glyphicon-shopping-cart"></i> Nutrition</a></li>
-                <li><a href="#/meals"><i class="glyphicon glyphicon-cutlery"></i> Meals</a></li>
-                <li><a href="#/workouts"><i class="glyphicon glyphicon-list"></i> Workouts</a></li>
-                <li><a href="#/profile"><i class="glyphicon glyphicon-user"></i> Profile</a></li>
-            </ul>
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Gymtracker</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/exercises"><i class="glyphicon glyphicon-wrench"></i> Exercises</a></li>
+                    <li><a href="#/workouts"><i class="glyphicon glyphicon-list"></i> Workouts</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#/meals"><i class="glyphicon glyphicon-cutlery"></i> Meals</a></li>
+                    <li><a href="#/nutrition"><i class="glyphicon glyphicon-shopping-cart"></i> Nutrition</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#/profile"><i class="glyphicon glyphicon-user"></i> Profile</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
         </nav>
+
         <div data-ng-view></div>
     </body>
 </html>
