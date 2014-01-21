@@ -183,8 +183,8 @@
                     localStorage.setItem(key, JSON.stringify(value));
                 };
 
-                this.clear = function () {
-                    localStorage.clear();
+                this.clear = function (key) {
+                    localStorage.setItem(key, []);
                 };
             }
         ]
@@ -196,6 +196,10 @@
             'storage',
             function (storage) {
                 this.items = [];
+
+                this.clear = function () {
+                    storage.clear('exercises');
+                };
 
                 this.addExercise = function (title, video, tags, slug) {
                     slug = slug || title.toLowerCase().replace(' ', '-');
@@ -244,6 +248,10 @@
             function (storage) {
                 this.items = [];
 
+                this.clear = function () {
+                    storage.clear('workouts');
+                };
+
                 this.addWorkout = function () {
                     var item = {
                         slug: new Date().getTime(),
@@ -288,14 +296,17 @@
             'exercises',
             'workouts',
             function (storage, exercises, workouts) {
-                this.resetStorage = function () {
-                    storage.clear();
+                this.resetStorage  = function () {
+                    this.resetExercises();
+                    this.resetWorkouts();
+                };
 
-                    workouts.items = [];
+                this.resetExercises = function () {
+                    workouts.clear();
+                };
 
-                    exercises.items = [];
-
-
+                this.resetExercises = function () {
+                    exercises.clear();
 
                     exercises.addExercise('Back Squat', 'http://www.youtube.com/watch?v=2dpwZ0Vaih4', ['legs', 'lower', 'quads']);
                     exercises.addExercise('Front Squat', undefined, ['legs', 'lower', 'quads']);
@@ -361,6 +372,14 @@
                     exercises.addExercise('Seated Cable Rows', 'http://www.youtube.com/watch?v=GZbfZ033f74', ['pull', 'upper', 'back']);
                     exercises.addExercise('T-Bar Rows', 'http://www.youtube.com/watch?v=j3Igk5nyZE4', ['pull', 'upper', 'back']);
                     exercises.addExercise('Chest Supported Machine Rows', 'http://www.youtube.com/watch?v=jUDnDJnTvmY', ['pull', 'upper', 'back']);
+
+
+
+                    exercises.addExercise('Woodchopper', '', ['abs']);
+                    exercises.addExercise('Hanging Leg-Lift', '', ['abs']);
+                    exercises.addExercise('Side-Crunch with Plate', '', ['abs']);
+                    exercises.addExercise('Standing Oblique Twist with Dumbbells', '', ['abs']);
+                    exercises.addExercise('Ab Crunch Version 3', '', ['abs']);
                 };
             }
         ]
