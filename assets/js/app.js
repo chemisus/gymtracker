@@ -218,7 +218,7 @@
                     return item;
                 };
 
-                this.findBySlug = function(value) {
+                this.findBySlug = function (value) {
                     for (var i in this.items) {
                         if (this.items[i].slug == value) {
                             return this.items[i];
@@ -266,7 +266,7 @@
                     return item;
                 };
 
-                this.findBySlug = function(value) {
+                this.findBySlug = function (value) {
                     for (var i in this.items) {
                         if (this.items[i].slug == value) {
                             return this.items[i];
@@ -296,7 +296,7 @@
             'exercises',
             'workouts',
             function (storage, exercises, workouts) {
-                this.resetStorage  = function () {
+                this.resetStorage = function () {
                     this.resetExercises();
                     this.resetWorkouts();
                 };
@@ -317,7 +317,6 @@
                     exercises.addExercise('Leg Extensions', undefined, ['legs', 'lower', 'quads']);
 
 
-
                     exercises.addExercise('Romanian Deadlift', 'http://www.youtube.com/watch?v=WtWtjViRsKo', ['legs', 'lower', 'hamstrings']);
                     exercises.addExercise('Stiff Legged Deadlift', 'http://www.youtube.com/watch?v=gtevN0SWp-o', ['legs', 'lower', 'hamstrings']);
                     exercises.addExercise('Glute-Ham Raises', 'http://www.youtube.com/watch?v=tCsyyC5E7M8', ['legs', 'lower', 'hamstrings']);
@@ -326,7 +325,6 @@
                     exercises.addExercise('Good Mornings', 'http://www.youtube.com/watch?v=Iycq-kJann0', ['legs', 'lower', 'hamstrings']);
                     exercises.addExercise('Deadlift', 'http://www.youtube.com/watch?v=RyJbvWAh6ec', ['legs', 'lower', 'hamstrings']);
                     exercises.addExercise('Supermans', null, ['legs', 'lower', 'hamstrings']);
-
 
 
                     exercises.addExercise('Barbell Bench Press (flat, incline or decline)', 'http://www.youtube.com/watch?v=rT7DgCr-3pg', ['push', 'upper', 'chest']);
@@ -338,7 +336,6 @@
                     exercises.addExercise('Cable Crossovers', '', ['push', 'upper', 'chest']);
 
 
-
                     exercises.addExercise('Overhead Barbell Press (seated or standing)', 'http://www.youtube.com/watch?v=ECWxumBMLVQ', ['push', 'upper', 'shoulder']);
                     exercises.addExercise('Overhead Dumbbell Press (seated or standing)', 'http://youtu.be/M2rwvNhTOu0?t=12s', ['push', 'upper', 'shoulder']);
                     exercises.addExercise('Arnold Press', 'http://www.youtube.com/watch?v=qHO94WIp924', ['push', 'upper', 'shoulder']);
@@ -347,13 +344,11 @@
                     exercises.addExercise('Front Raises', 'http://www.youtube.com/watch?v=-t7fuZ0KhDA', ['push', 'upper', 'shoulder']);
 
 
-
                     exercises.addExercise('Dips', 'http://www.youtube.com/watch?v=2i3o0bFZT_s', ['push', 'upper', 'triceps']);
                     exercises.addExercise('Close Grip Bench Press (flat or decline)', 'http://www.youtube.com/watch?v=nEF0bv2FW94', ['push', 'upper', 'triceps']);
                     exercises.addExercise('Laying Triceps Extension/Skull Crushers (flat/decline, barbell/dumbbell)', 'http://www.youtube.com/watch?v=d_KZxkY_0cM', ['push', 'upper', 'triceps']);
                     exercises.addExercise('Overhead Triceps Extension (barbell or dumbbell)', 'http://www.youtube.com/watch?v=YbX7Wd8jQ-Q', ['push', 'upper', 'triceps']);
                     exercises.addExercise('Cable Press Downs', 'http://www.youtube.com/watch?v=2-LAMcpzODU', ['push', 'upper', 'triceps']);
-
 
 
                     exercises.addExercise('Barbell Curls', 'http://www.youtube.com/watch?v=gPYubp8x7FA', ['pull', 'upper', 'biceps']);
@@ -364,7 +359,6 @@
                     exercises.addExercise('Cable Curls', 'http://www.youtube.com/watch?v=kyyP5l8noSY', ['pull', 'upper', 'biceps']);
 
 
-
                     exercises.addExercise('Chinups', 'http://www.youtube.com/watch?v=OZJD5fKVE1Y', ['pull', 'upper', 'back']);
                     exercises.addExercise('Pull ups', 'http://www.youtube.com/watch?v=bAEua0zu_74', ['pull', 'upper', 'back']);
                     exercises.addExercise('Lat Pull Downs', 'http://www.youtube.com/watch?v=JEb-dwU3VF4', ['pull', 'upper', 'back']);
@@ -372,7 +366,6 @@
                     exercises.addExercise('Seated Cable Rows', 'http://www.youtube.com/watch?v=GZbfZ033f74', ['pull', 'upper', 'back']);
                     exercises.addExercise('T-Bar Rows', 'http://www.youtube.com/watch?v=j3Igk5nyZE4', ['pull', 'upper', 'back']);
                     exercises.addExercise('Chest Supported Machine Rows', 'http://www.youtube.com/watch?v=jUDnDJnTvmY', ['pull', 'upper', 'back']);
-
 
 
                     exercises.addExercise('Woodchopper', '', ['abs']);
@@ -531,4 +524,28 @@
             }
         ]
     );
+
+    app.filter(
+        'findLastExerciseBySlug',
+        [
+            'workouts',
+            function (workouts) {
+                return function (slug) {
+                    var last = {};
+                    var current = null;
+
+                    for (var i in workouts.items) {
+                        for (var j in workouts.items[i].exercises) {
+                            if (workouts.items[i].exercises[j].slug === slug) {
+                                last = current;
+                                current = workouts.items[i].exercises[j];
+                            }
+                        }
+                    }
+
+                    return last;
+                }
+            }
+        ]
+    )
 })();

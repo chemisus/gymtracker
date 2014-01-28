@@ -54,6 +54,12 @@
                 <i class="glyphicon glyphicon-trash"></i>
             </button>
         </div>
+
+        <div class="col-sm-9">
+            <span class="badge" data-ng-repeat="set in (exercise.slug | findLastExerciseBySlug).sets">
+                {{ set.reps }}x {{ set.weight }}
+            </span>
+        </div>
     </div>
 
     <div class="row">
