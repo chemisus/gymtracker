@@ -547,5 +547,28 @@
                 }
             }
         ]
-    )
+    );
+
+    app.filter(
+        'countExerciseBySlug',
+        [
+            'workouts',
+            function (workouts) {
+                return function (slug, otherwise) {
+                    var count = 0;
+
+                    for (var i in workouts.items) {
+                        for (var j in workouts.items[i].exercises) {
+                            if (workouts.items[i].exercises[j].slug === slug) {
+                                count++;
+                                break;
+                            }
+                        }
+                    }
+
+                    return count || otherwise || '';
+                };
+            }
+        ]
+    );
 })();
