@@ -496,12 +496,12 @@
                 };
 
                 this.addWeight = function (set, value) {
-                    set.weight = parseInt(set.weight) + value;
+                    set.weight = parseFloat(set.weight) + value;
                     workouts.save();
                 };
 
                 this.addRep = function (set, value) {
-                    set.reps = parseInt(set.reps) + value;
+                    set.reps = parseFloat(set.reps) + value;
                     workouts.save();
                 };
 
