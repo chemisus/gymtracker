@@ -184,7 +184,7 @@
                 };
 
                 this.clear = function (key) {
-                    localStorage.setItem(key, []);
+                    this.save(key, []);
                 };
             }
         ]
@@ -198,6 +198,7 @@
                 this.items = [];
 
                 this.clear = function () {
+                    this.items = [];
                     storage.clear('exercises');
                 };
 
@@ -249,6 +250,7 @@
                 this.items = [];
 
                 this.clear = function () {
+                    this.items = [];
                     storage.clear('workouts');
                 };
 
@@ -301,11 +303,23 @@
                     this.resetWorkouts();
                 };
 
-                this.resetExercises = function () {
+                this.resetWorkouts = function () {
+                    if (!confirm('are you sure you want to clear workouts?')) {
+                        return;
+                    }
+
                     workouts.clear();
+
+                    alert('clearing workouts');
                 };
 
                 this.resetExercises = function () {
+                    if (!confirm('are you sure you want to clear exercises?')) {
+                        return;
+                    }
+
+                    alert('clearing exercises');
+
                     exercises.clear();
 
                     exercises.addExercise('Back Squat', 'http://www.youtube.com/watch?v=2dpwZ0Vaih4', ['legs', 'lower', 'quads']);
